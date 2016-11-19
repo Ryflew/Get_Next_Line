@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/15 19:11:22 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/19 17:45:34 by vdarmaya         ###   ########.fr       */
+/*   Created: 2016/11/20 00:22:04 by vdarmaya          #+#    #+#             */
+/*   Updated: 2016/11/20 00:27:29 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,17 @@ int			get_end(t_nextline *list)
 	return (i);
 }
 
-int			check_end(char **line, t_nextline *list, int bytes)
+int			check_end(char **line, t_nextline *list)
 {
 	char	*tmp;
 	char	*tmp2;
 
-	if (!bytes)
-		ft_bzero(list->buffer, ft_strlen(list->buffer));
-	if (list->nbr == 2 && !bytes)
-		return (1);
-	if (bytes)
-	{
-		if (!(tmp = ft_strsub(list->buffer, 0, get_end(list))))
-			return (-1);
-		tmp2 = *line;
-		*line = ft_strjoin(*line, tmp);
-		free(tmp);
-		free(tmp2);
-	}
-	if (!bytes)
-		return (0);
+	if (!(tmp = ft_strsub(list->buffer, 0, get_end(list))))
+		return (-1);
+	tmp2 = *line;
+	*line = ft_strjoin(*line, tmp);
+	free(tmp);
+	free(tmp2);
 	return (1);
 }
 
@@ -63,7 +54,7 @@ int			treat_extrastr(char **line, t_nextline *list)
 	ft_memcpy(list->buffer, str, ft_strlen(str));
 	free(str);
 	if (ft_strchr(list->buffer, '\n'))
-		return (check_end(line, list, 1));
+		return (check_end(line, list));
 	str = *line;
 	*line = ft_strjoin(*line, list->buffer);
 	free(str);
@@ -110,8 +101,10 @@ int			get_next_line(const int fd, char **line)
 	{
 		bytes = read(list_tmp->fd, list_tmp->buffer, BUFF_SIZE);
 		list_tmp->buffer[bytes] = '\0';
+		if (!bytes && !ft_strlen(*line))
+			return (0);
 		if (bytes < BUFF_SIZE || ft_strchr(list_tmp->buffer, '\n'))
-			return (check_end(line, list_tmp, bytes));
+			return (check_end(line, list_tmp));
 		tmp = *line;
 		*line = ft_strjoin(*line, list_tmp->buffer);
 		free(tmp);

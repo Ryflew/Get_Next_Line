@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/15 19:11:43 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/19 17:45:48 by vdarmaya         ###   ########.fr       */
+/*   Created: 2016/11/20 00:22:15 by vdarmaya          #+#    #+#             */
+/*   Updated: 2016/11/20 00:27:15 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include "libft/include/libft.h"
 
-# define BUFF_SIZE 8
+# define BUFF_SIZE 16
 
 typedef struct			s_nextline
 {
