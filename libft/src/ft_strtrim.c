@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/15 21:15:44 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/19 01:48:00 by vdarmaya         ###   ########.fr       */
+/*   Created: 2016/11/08 00:54:28 by vdarmaya          #+#    #+#             */
+/*   Updated: 2016/11/12 18:55:43 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include "get_next_line.h"
+#include "libft.h"
 
-int		main(int argc, char **argv)
+char	*ft_strtrim(char const *s)
 {
-	char	*str;
-	int		fd;
+	int		i;
+	int		start;
+	int		len;
 
-	fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &str))
-		ft_putendl(str);
-	close(fd);
-	return (0);
+	i = 0;
+	while (s[i] && ((s[i] == ' ') || (s[i] == '\t') || (s[i] == '\n')))
+		i++;
+	if (!s[i])
+		return (ft_strdup(""));
+	start = i;
+	while (s[i])
+		i++;
+	len = i - start;
+	while ((s[--i] == ' ') || (s[i] == '\t') || (s[i] == '\n'))
+		--len;
+	return (ft_strsub(s, start, len));
 }

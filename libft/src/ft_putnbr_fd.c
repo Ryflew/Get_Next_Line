@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/15 21:15:44 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/19 01:48:00 by vdarmaya         ###   ########.fr       */
+/*   Created: 2016/11/07 16:47:11 by vdarmaya          #+#    #+#             */
+/*   Updated: 2016/11/07 16:51:26 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include "get_next_line.h"
+#include "libft.h"
 
-int		main(int argc, char **argv)
+void	ft_putnbr_fd(int n, int fd)
 {
-	char	*str;
-	int		fd;
-
-	fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &str))
-		ft_putendl(str);
-	close(fd);
-	return (0);
+	if (n == -2147483648)
+	{
+		ft_putchar_fd('-', fd);
+		ft_putchar_fd((char)(2 + 48), fd);
+		ft_putnbr_fd(147483648, fd);
+	}
+	else if (n < 0)
+	{
+		ft_putchar_fd('-', fd);
+		ft_putnbr_fd(-n, fd);
+	}
+	else if (n > 9)
+	{
+		ft_putnbr_fd((n / 10), fd);
+		ft_putnbr_fd((n % 10), fd);
+	}
+	else
+		ft_putchar_fd(((char)(n + 48)), fd);
 }

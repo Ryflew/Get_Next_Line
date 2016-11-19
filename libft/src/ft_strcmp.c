@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/15 21:15:44 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/19 01:48:00 by vdarmaya         ###   ########.fr       */
+/*   Created: 2016/11/05 02:48:04 by vdarmaya          #+#    #+#             */
+/*   Updated: 2016/11/12 00:44:35 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include "get_next_line.h"
-
-int		main(int argc, char **argv)
+int		ft_strcmp(char *s1, char *s2)
 {
-	char	*str;
-	int		fd;
-
-	fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &str))
-		ft_putendl(str);
-	close(fd);
-	return (0);
+	while (*s1 && *s2 && (*s1 == *s2))
+	{
+		s1++;
+		s2++;
+	}
+	return ((unsigned char)*s1 - (unsigned char)*s2);
 }

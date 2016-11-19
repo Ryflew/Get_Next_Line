@@ -6,66 +6,115 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 19:11:22 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/16 01:01:47 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2016/11/19 17:45:34 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_realloc(char *str, int size)
-{
-	char 	*tmp;
-	int 	i;
-
-	tmp = str;
-	if (!(str = (char*)malloc(sizeof(char) * (size + 1))))
-	{
-		free(str);
-		return ((void*)0);
-	}
-	i = -1;
-	while (++i < size)
-		str[i] = tmp[i];
-	free(tmp);
-	return (str);
-}
-
-int		get_end(char *str)
+int			get_end(t_nextline *list)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] && str[i] != '\n')
+	while (list->buffer[i] && list->buffer[i] != '\n')
 		i++;
 	return (i);
 }
 
-int		get_next_line(const int fd, char **line)
+int			check_end(char **line, t_nextline *list, int bytes)
 {
-	static char	buffer[BUFF_SIZE];
-	char		*tmp;
-	int			bytes;
-	int			count;
+	char	*tmp;
+	char	*tmp2;
 
-	if (!(*line = malloc(1)))
+	if (!bytes)
+		ft_bzero(list->buffer, ft_strlen(list->buffer));
+	if (list->nbr == 2 && !bytes)
+		return (1);
+	if (bytes)
+	{
+		if (!(tmp = ft_strsub(list->buffer, 0, get_end(list))))
+			return (-1);
+		tmp2 = *line;
+		*line = ft_strjoin(*line, tmp);
+		free(tmp);
+		free(tmp2);
+	}
+	if (!bytes)
 		return (0);
-	count = 0;
+	return (1);
+}
+
+int			treat_extrastr(char **line, t_nextline *list)
+{
+	char	*str;
+	int		i;
+	int		bytes;
+
+	i = ft_strlen(list->buffer);
+	if (!(str = ft_strchr(list->buffer, '\n')))
+		return (0);
+	str++;
+	if (!(bytes = ft_strlen(str)))
+		return (3);
+	if (!(str = ft_strsub(str, 0, ft_strlen(str))))
+		return (-1);
+	ft_bzero(list->buffer, BUFF_SIZE + 1);
+	ft_memcpy(list->buffer, str, ft_strlen(str));
+	free(str);
+	if (ft_strchr(list->buffer, '\n'))
+		return (check_end(line, list, 1));
+	str = *line;
+	*line = ft_strjoin(*line, list->buffer);
+	free(str);
+	ft_bzero(list->buffer, BUFF_SIZE);
+	return (2);
+}
+
+t_nextline	*set_list(char **line, t_nextline **list, const int fd)
+{
+	t_nextline	*tmp;
+
+	tmp = *list;
+	while (tmp)
+	{
+		if (tmp->fd == fd)
+		{
+			tmp->nbr = treat_extrastr(line, tmp);
+			return (tmp);
+		}
+		tmp = tmp->next;
+	}
+	tmp = (t_nextline*)malloc(sizeof(t_nextline));
+	tmp->fd = fd;
+	tmp->nbr = 42;
+	tmp->next = *list;
+	*list = tmp;
+	return (tmp);
+}
+
+int			get_next_line(const int fd, char **line)
+{
+	static t_nextline	*list = NULL;
+	t_nextline			*list_tmp;
+	char				*tmp;
+	int					bytes;
+
+	if (!line || !(*line = (char*)malloc(1)) || fd < 0 || read(fd, NULL, 0) < 0)
+		return (-1);
+	ft_bzero(*line, ft_strlen(*line));
+	list_tmp = set_list(line, &list, fd);
+	if (list_tmp->nbr >= -1 && list_tmp->nbr <= 1)
+		return (list_tmp->nbr);
 	while (1)
 	{
-		bytes = read(fd, buffer, BUFF_SIZE);
-		if (ft_strchr(buffer, '\n') || (bytes < BUFF_SIZE))
-		{
-			if (!(tmp = ft_strsub(buffer, 0, get_end(buffer))))
-				return (-1);
-			*line = ft_strjoin(*line, tmp);
-			free(tmp);
-			if (ft_strchr(buffer, '\n'))
-				return (1);
-			return (0);
-		}
-		if (!(ft_realloc(*line, (BUFF_SIZE * ++count))))
-			return (-1);
-		*line = ft_strjoin(*line, buffer);
+		bytes = read(list_tmp->fd, list_tmp->buffer, BUFF_SIZE);
+		list_tmp->buffer[bytes] = '\0';
+		if (bytes < BUFF_SIZE || ft_strchr(list_tmp->buffer, '\n'))
+			return (check_end(line, list_tmp, bytes));
+		tmp = *line;
+		*line = ft_strjoin(*line, list_tmp->buffer);
+		free(tmp);
 	}
 	return (-1);
 }

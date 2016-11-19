@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/15 21:15:44 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/19 01:48:00 by vdarmaya         ###   ########.fr       */
+/*   Created: 2016/11/07 21:23:50 by vdarmaya          #+#    #+#             */
+/*   Updated: 2016/11/07 22:10:11 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 #include <stdlib.h>
-#include "get_next_line.h"
+#include "libft.h"
 
-int		main(int argc, char **argv)
+char	*ft_strnew(size_t size)
 {
 	char	*str;
-	int		fd;
+	size_t	i;
 
-	fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &str))
-		ft_putendl(str);
-	close(fd);
-	return (0);
+	i = -1;
+	++size;
+	if (!(str = (char*)malloc(sizeof(*str) * size)))
+		return (NULL);
+	while (++i < size)
+		str[i] = '\0';
+	return (str);
 }

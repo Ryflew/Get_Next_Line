@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/15 21:15:44 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/19 01:48:00 by vdarmaya         ###   ########.fr       */
+/*   Created: 2016/11/06 01:28:59 by vdarmaya          #+#    #+#             */
+/*   Updated: 2016/11/12 19:11:57 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+#include "libft.h"
 #include <stdlib.h>
-#include "get_next_line.h"
 
-int		main(int argc, char **argv)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	char	*str;
-	int		fd;
+	char	*tmp;
 
-	fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &str))
-		ft_putendl(str);
-	close(fd);
-	return (0);
+	tmp = (char*)malloc(n);
+	ft_memcpy(tmp, src, n);
+	ft_memcpy(dest, tmp, n);
+	free(tmp);
+	return (dest);
 }

@@ -1,31 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strsub.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/15 21:15:44 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/19 01:48:00 by vdarmaya         ###   ########.fr       */
+/*   Created: 2016/11/07 22:12:27 by vdarmaya          #+#    #+#             */
+/*   Updated: 2016/11/12 19:04:08 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 #include <stdlib.h>
-#include "get_next_line.h"
+#include "libft.h"
 
-int		main(int argc, char **argv)
+char	*ft_strsub(char const *s, unsigned int start, size_t len)
 {
+	int		i;
 	char	*str;
-	int		fd;
+	int		size;
 
-	fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &str))
-		ft_putendl(str);
-	close(fd);
-	return (0);
+	i = -1;
+	size = ft_strlen((char*)s);
+	if (!s || ((size - start) < len))
+		return (NULL);
+	if (!(str = (char*)malloc(sizeof(*str) * (len + 1))))
+		return (NULL);
+	while (start--)
+		s++;
+	while (len--)
+	{
+		str[++i] = *s;
+		s++;
+	}
+	str[++i] = '\0';
+	return (str);
 }

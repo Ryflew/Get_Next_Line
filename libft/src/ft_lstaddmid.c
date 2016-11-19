@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstaddmid.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/15 21:15:44 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/19 01:48:00 by vdarmaya         ###   ########.fr       */
+/*   Created: 2016/11/09 18:32:11 by vdarmaya          #+#    #+#             */
+/*   Updated: 2016/11/09 19:20:50 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include "get_next_line.h"
+#include "libft.h"
 
-int		main(int argc, char **argv)
+void	ft_lstaddmid(t_list **alst, t_list *previous, t_list *new)
 {
-	char	*str;
-	int		fd;
+	t_list	*tmp;
+	t_list	*tmp2;
 
-	fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &str))
-		ft_putendl(str);
-	close(fd);
-	return (0);
+	if (!alst || !previous || !new)
+		return ;
+	tmp = *alst;
+	while (tmp && (tmp != previous))
+		tmp = tmp->next;
+	if (tmp == previous)
+	{
+		tmp2 = tmp->next;
+		tmp->next = new;
+		new->next = tmp2;
+	}
 }

@@ -1,31 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/15 21:15:44 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/19 01:48:00 by vdarmaya         ###   ########.fr       */
+/*   Created: 2016/11/08 17:10:01 by vdarmaya          #+#    #+#             */
+/*   Updated: 2016/11/12 18:55:23 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 #include <stdlib.h>
-#include "get_next_line.h"
+#include "libft.h"
 
-int		main(int argc, char **argv)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*str;
-	int		fd;
+	int		len;
+	int		i;
 
-	fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &str))
-		ft_putendl(str);
-	close(fd);
-	return (0);
+	i = -1;
+	len = ft_strlen((char*)s1) + ft_strlen((char*)s2) + 1;
+	if (!(str = (char*)malloc(sizeof(char) * len)))
+		return (NULL);
+	while (*s1)
+	{
+		str[++i] = *s1;
+		s1++;
+	}
+	while (*s2)
+	{
+		str[++i] = *s2;
+		s2++;
+	}
+	str[++i] = '\0';
+	return (str);
 }

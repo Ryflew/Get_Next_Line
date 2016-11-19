@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memccpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/15 21:15:44 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/19 01:48:00 by vdarmaya         ###   ########.fr       */
+/*   Created: 2016/11/06 00:41:13 by vdarmaya          #+#    #+#             */
+/*   Updated: 2016/11/12 00:36:53 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include "get_next_line.h"
+#include <string.h>
 
-int		main(int argc, char **argv)
+void	*ft_memccpy(void *dest, const void *src, int c, size_t n)
 {
-	char	*str;
-	int		fd;
+	unsigned char		*dest_bis;
+	const unsigned char	*src_bis;
 
-	fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &str))
-		ft_putendl(str);
-	close(fd);
-	return (0);
+	dest_bis = dest;
+	src_bis = (void*)src;
+	while (n--)
+	{
+		if ((*dest_bis++ = *src_bis++) == (unsigned char)c)
+			return (dest_bis);
+	}
+	return (NULL);
 }
