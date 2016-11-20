@@ -6,34 +6,34 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 00:22:04 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/20 00:27:29 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2016/11/21 00:07:34 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int			get_end(t_nextline *list)
-{
-	int	i;
-
-	i = 0;
-	while (list->buffer[i] && list->buffer[i] != '\n')
-		i++;
-	return (i);
-}
-
 int			check_end(char **line, t_nextline *list)
 {
 	char	*tmp;
 	char	*tmp2;
+	int		i;
 
-	if (!(tmp = ft_strsub(list->buffer, 0, get_end(list))))
+	i = 0;
+	while (list->buffer[i] && list->buffer[i] != '\n')
+		i++;
+	if (!(tmp = ft_strsub(list->buffer, 0, i)))
 		return (-1);
 	tmp2 = *line;
 	*line = ft_strjoin(*line, tmp);
 	free(tmp);
 	free(tmp2);
 	return (1);
+}
+
+int			lst_remove(t_nextline *elem)
+{
+	elem->fd = -1;
+	return (0);
 }
 
 int			treat_extrastr(char **line, t_nextline *list)
@@ -94,15 +94,16 @@ int			get_next_line(const int fd, char **line)
 	if (!line || !(*line = (char*)malloc(1)) || fd < 0 || read(fd, NULL, 0) < 0)
 		return (-1);
 	ft_bzero(*line, ft_strlen(*line));
-	list_tmp = set_list(line, &list, fd);
+	if ((list_tmp = set_list(line, &list, fd)) && !list_tmp->nbr)
+		return (lst_remove(list_tmp));
 	if (list_tmp->nbr >= -1 && list_tmp->nbr <= 1)
 		return (list_tmp->nbr);
 	while (1)
 	{
-		bytes = read(list_tmp->fd, list_tmp->buffer, BUFF_SIZE);
+		bytes = read(fd, list_tmp->buffer, BUFF_SIZE);
 		list_tmp->buffer[bytes] = '\0';
 		if (!bytes && !ft_strlen(*line))
-			return (0);
+			return (lst_remove(list_tmp));
 		if (bytes < BUFF_SIZE || ft_strchr(list_tmp->buffer, '\n'))
 			return (check_end(line, list_tmp));
 		tmp = *line;
