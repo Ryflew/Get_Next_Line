@@ -6,13 +6,13 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 00:22:04 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/21 00:07:34 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2016/11/21 19:57:08 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int			check_end(char **line, t_nextline *list)
+static int			check_end(char **line, t_nextline *list)
 {
 	char	*tmp;
 	char	*tmp2;
@@ -30,13 +30,13 @@ int			check_end(char **line, t_nextline *list)
 	return (1);
 }
 
-int			lst_remove(t_nextline *elem)
+int					end(t_nextline *elem)
 {
 	elem->fd = -1;
 	return (0);
 }
 
-int			treat_extrastr(char **line, t_nextline *list)
+static int			treat_extrastr(char **line, t_nextline *list)
 {
 	char	*str;
 	int		i;
@@ -62,7 +62,7 @@ int			treat_extrastr(char **line, t_nextline *list)
 	return (2);
 }
 
-t_nextline	*set_list(char **line, t_nextline **list, const int fd)
+static t_nextline	*set_list(char **line, t_nextline **list, const int fd)
 {
 	t_nextline	*tmp;
 
@@ -71,6 +71,7 @@ t_nextline	*set_list(char **line, t_nextline **list, const int fd)
 	{
 		if (tmp->fd == fd)
 		{
+			ft_putnbr(fd);
 			tmp->nbr = treat_extrastr(line, tmp);
 			return (tmp);
 		}
@@ -84,7 +85,7 @@ t_nextline	*set_list(char **line, t_nextline **list, const int fd)
 	return (tmp);
 }
 
-int			get_next_line(const int fd, char **line)
+int					get_next_line(const int fd, char **line)
 {
 	static t_nextline	*list = NULL;
 	t_nextline			*list_tmp;
@@ -95,7 +96,7 @@ int			get_next_line(const int fd, char **line)
 		return (-1);
 	ft_bzero(*line, ft_strlen(*line));
 	if ((list_tmp = set_list(line, &list, fd)) && !list_tmp->nbr)
-		return (lst_remove(list_tmp));
+		return (end(list_tmp));
 	if (list_tmp->nbr >= -1 && list_tmp->nbr <= 1)
 		return (list_tmp->nbr);
 	while (1)
@@ -103,7 +104,7 @@ int			get_next_line(const int fd, char **line)
 		bytes = read(fd, list_tmp->buffer, BUFF_SIZE);
 		list_tmp->buffer[bytes] = '\0';
 		if (!bytes && !ft_strlen(*line))
-			return (lst_remove(list_tmp));
+			return (end(list_tmp));
 		if (bytes < BUFF_SIZE || ft_strchr(list_tmp->buffer, '\n'))
 			return (check_end(line, list_tmp));
 		tmp = *line;
