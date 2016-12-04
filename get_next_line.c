@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 00:22:04 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/21 19:57:08 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2016/12/04 21:19:08 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ static t_nextline	*set_list(char **line, t_nextline **list, const int fd)
 	{
 		if (tmp->fd == fd)
 		{
-			ft_putnbr(fd);
 			tmp->nbr = treat_extrastr(line, tmp);
 			return (tmp);
 		}
