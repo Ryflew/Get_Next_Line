@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 00:22:04 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/12/04 21:19:08 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/01/14 00:13:25 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,17 @@ static int			check_end(char **line, t_nextline *list)
 		i++;
 	if (!(tmp = ft_strsub(list->buffer, 0, i)))
 		return (-1);
-	tmp2 = *line;
-	*line = ft_strjoin(*line, tmp);
+	if (ft_strlen(*line) > 0 && ft_strlen(tmp) > 0)
+		tmp2 = ft_strjoin(*line, tmp);
+	else if (ft_strlen(*line) == 0 && ft_strlen(tmp) > 0)
+		tmp2 = ft_strdup(tmp);
+	else if (ft_strlen(*line) > 0 && ft_strlen(tmp) == 0)
+		tmp2 = ft_strdup(*line);
+	else
+		tmp2 = ft_strdup("");
 	free(tmp);
-	free(tmp2);
+	free(*line);
+	*line = tmp2;
 	return (1);
 }
 

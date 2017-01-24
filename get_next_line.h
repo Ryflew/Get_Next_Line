@@ -6,7 +6,7 @@
 /*   By: vdarmaya <vdarmaya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 00:22:15 by vdarmaya          #+#    #+#             */
-/*   Updated: 2016/11/26 03:09:06 by vdarmaya         ###   ########.fr       */
+/*   Updated: 2017/01/10 20:47:56 by vdarmaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include "libft/include/libft.h"
+# include "../libft/include/libft.h"
 
 # define BUFF_SIZE 32
 
